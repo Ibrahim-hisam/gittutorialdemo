@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <style>
+        .container
+        {
+            margin: auto;
+            width: 100%;
+        }
+        #my-form
+        {
+            padding: 2rem;
+            background-color: orange;
+            display: block;
+        }
+        .error
+        {
+            background-color: white;
+            text-align: center;
+            
+        }
+    </style>
+
+</head>
+<body>
+    <section class="container">
+        <form id="my-form">
+            <h1 style="text-align: center">Book a call</h1>
+            <p style="text-align: center">Book a call slot and our representative will call you within 1hr of selected time.</p>
+            <div class ="msg"></div>
+            <div>
+                <label for="name">Name</label><br>
+                <input type="text" id="name" placeholder="John Doe" style="width: 100%">
+            </div>  
+            <div><br>
+                <label for="email">Email</label><br>
+                <input type="text" id="email" placeholder="JohnDoe@email.com" style="width: 100%">
+            </div><br>
+            <div>
+                <label for="phone">Phone</label><br>
+                <input type="tel" id="phone" name="phone" placeholder="123-45-678" maxlength="10" style="width: 100%">
+            </div><br>
+            <input class="btn" type="submit" value="Click Me" style="width: 100%">
+        </form>
+        <ul id="user"></ul>
+    </section>  
+    <script>
+            function User()
+            {
+            const name = document.getElementById("name").value;
+            console.log(name);
+            const email = document.getElementById("email").value;
+            console.log(email);
+            const phone = document.getElementById("phone").value;
+            console.log(phone);
+            const Call = document.getElementById("Call").value;
+            console.log(Call);
+            }
+        const myForm = document.querySelector('#my-form');
+        const nameInput = document.querySelector('#name');
+        const emailInput = document.querySelector('#email');
+        const phoneInput = document.querySelector('#phone');
+        const msg = document.querySelector('.msg');
+        const userList = document.querySelector('#user');
+        const btn = document.querySelector('.btn');        
+        btn.style.background = 'white';
+        
+        btn.addEventListener('click', onClick);
+        btn.addEventListener('mouseover', onMouseOver);
+        btn.addEventListener('mouseout', onMouseOut);
+        
+        function onClick(e) 
+        {
+            e.preventDefault();
+            
+            if(nameInput.value === '' || emailInput.value === '' || phoneInput.value === '')
+            {
+                msg.classList.add('error');
+                msg.innerHTML = 'Please enter all the fields';
+                setTimeout(() => msg.remove(), 3000);
+            }
+            else
+            {
+                const li = document.createElement('li');
+                //const text = 
+                const textNode = document.createTextNode(`${nameInput.value},  ${emailInput.value},  ${phoneInput.value}`);
+                
+            li.appendChild(textNode); 
+            userList.appendChild(li);
+                nameInput.value ='';
+                emailInput.value = '';
+                phoneInput.value = '';
+            }
+        }
+
+        function onMouseOver() 
+        {
+            btn.style.background = 'lightgray';
+        }
+
+        function onMouseOut() 
+        {
+            btn.style.background = 'white'; 
+        }
+    </script>
+</body>
+</html>
+
+
+
