@@ -92,6 +92,11 @@
                 
             li.appendChild(textNode); 
             userList.appendChild(li);
+
+            localStorage.setItem('UserDetailsName',nameInput.value);
+            localStorage.setItem('UserDetailsEmail',emailInput.value);
+            localStorage.setItem('UserDetailsPhone',phoneInput.value);
+            
                 nameInput.value ='';
                 emailInput.value = '';
                 phoneInput.value = '';
@@ -107,6 +112,7 @@
         {
             btn.style.background = 'white'; 
         }
+        
     </script>
 </body>
 </html>
