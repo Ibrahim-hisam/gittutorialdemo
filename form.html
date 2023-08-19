@@ -93,9 +93,20 @@
             li.appendChild(textNode); 
             userList.appendChild(li);
 
-            localStorage.setItem('UserDetailsName',nameInput.value);
+/*             localStorage.setItem('UserDetailsName',nameInput.value);
             localStorage.setItem('UserDetailsEmail',emailInput.value);
             localStorage.setItem('UserDetailsPhone',phoneInput.value);
+             */
+
+            let myobj = {
+                name: nameInput.value, 
+                email: emailInput.value,
+                phone: phoneInput.value
+            };
+            let UserDetails = JSON.stringify(myobj);
+            localStorage.setItem('myobj', UserDetails);
+            let Details = JSON.parse(localStorage.getItem('myobj'));
+            console.log(Details);
             
                 nameInput.value ='';
                 emailInput.value = '';
