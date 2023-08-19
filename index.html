@@ -25,75 +25,95 @@
         <h2 class="title">Add Items</h2>
         <form id="addForm" class="form-inline mb-3">
             <input type="text" class="form-control mr-2" id="item">
+            <input type="text" class="form-control mr-2" id="description">
             <input type="submit" class="btn btn-dark" value="Submit">
         </form>
         <h2 class="title">Items</h2>
         <ul id="items" class="list-group">
             <li class="list-group-item">Item 1 <button class="btn btn-danger btn-sm float-right delete">X</button> <button class="btn btn-primary btn-sm float-right edit">Edit</button></li>
             <li class="list-group-item">Item 2 <button class="btn btn-danger btn-sm float-right delete">X</button> <button class="btn btn-primary btn-sm float-right edit">Edit</button></li>
-            <li class="list-group-item">Item 3 <button class="btn btn-danger btn-sm float-right delete">X</button> <button class="btn btn-primary btn-sm float-right edit">Edit</button></li>
-            <li class="list-group-item">Item 4 <button class="btn btn-danger btn-sm float-right delete">X</button> <button class="btn btn-primary btn-sm float-right edit">Edit</button></li>
+            <li class="list-group-item">Item 3 <button class="btn btn-danger btn-sm float-right delete">X</button> <button class="btn btn-primary btn-sm float-right edit">Edit</button> </li>
+            <li class="list-group-item">Item 4 <button class="btn btn-danger btn-sm float-right delete">X</button> <button class="btn btn-primary btn-sm float-right edit">Edit</button> </li>
         </ul>
             </div>
                 </div>    
     <script>
         var form = document.getElementById('addForm');
         var itemList = document.getElementById('items');
-        var editBtn = document.createElement('button');
-    // Form submit event
+        var filter = document.getElementById('filter');
+
+        //Form Submit event
         form.addEventListener('submit', addItem);
-        
-    // Delete event
+        //Delete event
         itemList.addEventListener('click', removeItem);
-        // Add item
-function addItem(e){
-  e.preventDefault();
-
-  // Get input value
-  var newItem = document.getElementById('item').value;
-
-  // Create new li element
-  var li = document.createElement('li');
-  // Add class
-  li.className = 'list-group-item';
-  // Add text node with input value
-  li.appendChild(document.createTextNode(newItem));
-
-  // Create del button element
-  var deleteBtn = document.createElement('button');
-
-  // Add classes to del button
-  deleteBtn.className = 'btn btn-danger btn-sm float-right delete';
-
-  // Append text node
-  deleteBtn.appendChild(document.createTextNode('X'));
-
-  // Append button to li
-  li.appendChild(deleteBtn);
-
-  // Append li to list
- itemList.appendChild(li);
-
-  
- document.getElementById('item').value = '';
-    editBtn.className = 'btn btn-primary btn-sm float-right edit';
-    editBtn.appendChild(document.createTextNode('Edit'));
-    li.appendChild(editBtn);
-    itemList.appendChild(li);
-  
-
-}
-
-// Remove item
-function removeItem(e){
-  if(e.target.classList.contains('delete')){
-    if(confirm('Are You Sure?')){
-      var li = e.target.parentElement;
-      itemList.removeChild(li);
+        //Filter event
+        filter.addEventListener('keyup', filteritems)
+        //Add Item
+        function addItem(e)
+        {
+            e.preventDefault();
+            // Get input value
+            var newItem = document.getElementById('item').value;
+            //get a new a list element
+            var li = document.createElement('li');
+            //Add class
+            li.className = 'list-group-item';
+            //Add text Node
+            li.appendChild(document.createTextNode(newItem));
+            
+            //Description input
+            var description= document.getElementById('description').value;
+            var descriptionNode = document.createTextNode(description);
+            li.appendChild(descriptionNode);
+            //Create del btn
+            var delbtn = document.createElement('button');
+            //Add classes
+            delbtn.className = 'btn btn-danger btn-sm float-right delete';
+            //Append text node
+            delbtn.appendChild(document.createTextNode('X'));
+            //Add a new Edit button
+            var edbtn = document.createElement('button');
+            edbtn. className = 'btn btn-primary btn-sm float-right edit';
+            edbtn.appendChild(document.createTextNode('Edit'));
+            
+            li.appendChild(delbtn);
+            li.appendChild(edbtn);
+            itemList.appendChild(li);
+        } 
+    function removeItem(e)
+    {
+        if(e.target.classList.contains('delete'))
+        {
+            if(confirm('Are You Sure?'))
+            {
+                var li = e.target.parentElement;
+                itemList.removeChild(li);
+            }
+        }
     }
-  }
-}
 
+    //filter items
+    function filteritems(e)
+    {
+        //conver text to lower case
+        var text = e.target.value.toLowerCase();
+        var items = itemList.getElementsByClassName('list-group-item');
+        //Convert to an array
+        Array.from(items).forEach(function(item)
+        {
+            var itemName = item.firstChild.textContent;
+            var description = item.childNodes[1].textContent;
+
+if (itemName.toLowerCase().indexOf(text) != -1 || description.toLowerCase().indexOf(text) != -1)
+{
+    item.style.display = 'block';
+} 
+else {
+    item.style.display = 'none';
+            }
+            
+        }); 
+    }
     </script>
 </body> 
 </html>
