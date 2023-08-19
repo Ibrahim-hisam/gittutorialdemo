@@ -22,7 +22,17 @@
         {
             background-color: white;
             text-align: center;
-            
+        }
+        .delbtn
+        {
+            display: block;
+            width: 20%;
+            padding: 10px 15px;
+            border: 0;
+            background: #c03535;
+            color: #fff;
+            border-radius: 5px;
+            margin: 5px 155px; 
         }
     </style>
 
@@ -71,8 +81,7 @@
         btn.style.background = 'white';
         
         btn.addEventListener('click', onClick);
-        btn.addEventListener('mouseover', onMouseOver);
-        btn.addEventListener('mouseout', onMouseOut);
+        
         
         function onClick(e) 
         {
@@ -98,6 +107,13 @@
                 const li = document.createElement('li');
                 li.appendChild(document.createTextNode(` Name: ${nameInput.value}, Email: ${emailInput.value}, Phone No:${phoneInput.value}`));
                 userList.appendChild(li);
+
+                const deleBtn = document.createElement('button');
+                deleBtn.className = 'delbtn';
+                deleBtn.setAttribute("type", "submit");
+                deleBtn.setAttribute("id", `${userDatastring}`);
+                deleBtn.innerText = 'Delete';
+                userList.appendChild(deleBtn); 
                 
                 nameInput.value = '';
                 emailInput.value = '';
@@ -106,19 +122,22 @@
             }
         }
 
-        function onMouseOver() 
-        {
-            btn.style.background = 'lightgray';
-        }
+        userList.addEventListener('click', onDelete);
 
-        function onMouseOut() 
-        {
-            btn.style.background = 'white'; 
-        }
-        
+function onDelete(e)
+{
+    e.preventDefault();
+    if (e.target.classList.contains('delbtn')) {
+        //remove from local storage
+        const btnId = JSON.parse(e.target.id).userName;
+        localStorage.removeItem(`${btnId}`);
+
+        //delete value from browser
+        e.target.previousElementSibling.remove();
+        e.target.nextElementSibling.remove();
+        e.target.remove();
+    }
+}   
     </script>
 </body>
 </html>
-
-
-
