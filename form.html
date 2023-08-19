@@ -86,31 +86,23 @@
             }
             else
             {
-                const li = document.createElement('li');
-                //const text = 
-                const textNode = document.createTextNode(`${nameInput.value},  ${emailInput.value},  ${phoneInput.value}`);
+                const userdata = {
+                    userName: `${nameInput.value}`,
+                    userEmail: `${emailInput.value}`,
+                    userPhone: `${phoneInput.value}`
+                }
+                const userDatastring=JSON.stringify(userdata);
+                localStorage.setItem(`${nameInput.value}`, `${JSON.stringify(userdata)}`);
                 
-            li.appendChild(textNode); 
-            userList.appendChild(li);
-
-/*             localStorage.setItem('UserDetailsName',nameInput.value);
-            localStorage.setItem('UserDetailsEmail',emailInput.value);
-            localStorage.setItem('UserDetailsPhone',phoneInput.value);
-             */
-
-            let myobj = {
-                name: nameInput.value, 
-                email: emailInput.value,
-                phone: phoneInput.value
-            };
-            let UserDetails = JSON.stringify(myobj);
-            localStorage.setItem('myobj', UserDetails);
-            let Details = JSON.parse(localStorage.getItem('myobj'));
-            console.log(Details);
-            
-                nameInput.value ='';
+                
+                const li = document.createElement('li');
+                li.appendChild(document.createTextNode(` Name: ${nameInput.value}, Email: ${emailInput.value}, Phone No:${phoneInput.value}`));
+                userList.appendChild(li);
+                
+                nameInput.value = '';
                 emailInput.value = '';
                 phoneInput.value = '';
+
             }
         }
 
