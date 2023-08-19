@@ -34,6 +34,17 @@
             border-radius: 5px;
             margin: 5px 155px; 
         }
+        .editbtn
+        {
+            display: block;
+            width: 20%;
+            padding: 10px 15px;
+            border: 0;
+            background: #4d59f5;
+            color: #fff;
+            border-radius: 5px;
+            margin: 5px 155px; 
+        }
     </style>
 
 </head>
@@ -60,17 +71,6 @@
         <ul id="user"></ul>
     </section>  
     <script>
-            function User()
-            {
-            const name = document.getElementById("name").value;
-            console.log(name);
-            const email = document.getElementById("email").value;
-            console.log(email);
-            const phone = document.getElementById("phone").value;
-            console.log(phone);
-            const Call = document.getElementById("Call").value;
-            console.log(Call);
-            }
         const myForm = document.querySelector('#my-form');
         const nameInput = document.querySelector('#name');
         const emailInput = document.querySelector('#email');
@@ -109,11 +109,18 @@
                 userList.appendChild(li);
 
                 const deleBtn = document.createElement('button');
-                deleBtn.className = 'delbtn';
-                deleBtn.setAttribute("type", "submit");
-                deleBtn.setAttribute("id", `${userDatastring}`);
-                deleBtn.innerText = 'Delete';
-                userList.appendChild(deleBtn); 
+                    deleBtn.className = 'delbtn';
+                    deleBtn.setAttribute("type", "submit");
+                    deleBtn.setAttribute("id", `${userDatastring}`);
+                    deleBtn.innerText = 'Delete';
+                    userList.appendChild(deleBtn); 
+
+                const editBtn = document.createElement('button');
+                    editBtn.className = 'editbtn';
+                    editBtn.setAttribute("type", "submit");
+                    editBtn.setAttribute("id", `${userDatastring}`);
+                    editBtn.innerText = 'Edit';
+                    userList.appendChild(editBtn);
                 
                 nameInput.value = '';
                 emailInput.value = '';
@@ -127,16 +134,33 @@
 function onDelete(e)
 {
     e.preventDefault();
-    if (e.target.classList.contains('delbtn')) {
+    if (e.target.classList.contains('delbtn')) 
+        {
         //remove from local storage
         const btnId = JSON.parse(e.target.id).userName;
         localStorage.removeItem(`${btnId}`);
-
         //delete value from browser
         e.target.previousElementSibling.remove();
         e.target.nextElementSibling.remove();
         e.target.remove();
     }
+
+    if (e.target.classList.contains('editbtn'))
+    {
+        //remove from local storage
+        const btnId = JSON.parse(e.target.id);
+        localStorage.removeItem(`${btnId.userEmail}`);
+        //regain name and phone number
+        const lists = document.querySelectorAll('input');
+        lists[0].value = `${btnId.userName}`;
+        lists[1].value =`${btnId.userEmail}`;
+        lists[2].value = `${btnId.userPhone}`;
+        //delete value from browser
+        e.target.previousElementSibling.remove();
+        e.target.previousElementSibling.remove();
+        e.target.remove();
+    }
+    
 }   
     </script>
 </body>
