@@ -4,26 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-    <style>
-        .container
+<style>
+    .container
         {
             margin: auto;
             width: 100%;
         }
-        #my-form
+    #my-form
         {
             padding: 2rem;
             background-color: orange;
             display: block;
         }
-        .error
+    .error
         {
             background-color: white;
             text-align: center;
         }
-        .delbtn
+    .delbtn
         {
             display: block;
             width: 20%;
@@ -34,7 +32,7 @@
             border-radius: 5px;
             margin: 5px 155px; 
         }
-        .editbtn
+    .editbtn
         {
             display: block;
             width: 20%;
@@ -45,8 +43,7 @@
             border-radius: 5px;
             margin: 5px 155px; 
         }
-    </style>
-
+</style>
 </head>
 <body>
     <section class="container">
@@ -70,6 +67,7 @@
         </form>
         <ul id="user"></ul>
     </section>  
+    <script src= "https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.0/axios.min.js"></script>
     <script>
         const myForm = document.querySelector('#my-form');
         const nameInput = document.querySelector('#name');
@@ -79,11 +77,9 @@
         const userList = document.querySelector('#user');
         const btn = document.querySelector('.btn');        
         btn.style.background = 'white';
-        
-        btn.addEventListener('click', onClick);
-        
-        
-        function onClick(e) 
+        btn.addEventListener('click', onsubmit);
+                
+        function onsubmit(e) 
         {
             e.preventDefault();
             
@@ -101,20 +97,28 @@
                     userPhone: `${phoneInput.value}`
                 }
                 const userDatastring=JSON.stringify(userdata);
-                localStorage.setItem(`${nameInput.value}`, `${JSON.stringify(userdata)}`);
+                //localStorage.setItem(`${emailInput.value}`, `${JSON. stringify(userdata)}`);
+                
+                axios.post("https://crudcrud.com/api/fbcfb6dbbcff42d39abdcabeb22d802a/AppointmentData", userdata)
+                .then((response) =>{
+                    console.log(response)
+                })
+                .catch((err) => {
+                    console.log(err)
+                });
                 
                 
                 const li = document.createElement('li');
                 li.appendChild(document.createTextNode(` Name: ${nameInput.value}, Email: ${emailInput.value}, Phone No:${phoneInput.value}`));
                 userList.appendChild(li);
-
+                
                 const deleBtn = document.createElement('button');
                     deleBtn.className = 'delbtn';
                     deleBtn.setAttribute("type", "submit");
                     deleBtn.setAttribute("id", `${userDatastring}`);
                     deleBtn.innerText = 'Delete';
                     userList.appendChild(deleBtn); 
-
+                
                 const editBtn = document.createElement('button');
                     editBtn.className = 'editbtn';
                     editBtn.setAttribute("type", "submit");
@@ -125,26 +129,25 @@
                 nameInput.value = '';
                 emailInput.value = '';
                 phoneInput.value = '';
-
             }
         }
-
+        
         userList.addEventListener('click', onDelete);
-
+        
 function onDelete(e)
 {
     e.preventDefault();
     if (e.target.classList.contains('delbtn')) 
         {
         //remove from local storage
-        const btnId = JSON.parse(e.target.id).userName;
+        const btnId = JSON.parse(e.target.id).userEmail;
         localStorage.removeItem(`${btnId}`);
         //delete value from browser
         e.target.previousElementSibling.remove();
         e.target.nextElementSibling.remove();
         e.target.remove();
     }
-
+                            
     if (e.target.classList.contains('editbtn'))
     {
         //remove from local storage
@@ -161,7 +164,6 @@ function onDelete(e)
         e.target.remove();
         <!-- Hello World -->
     }
-    
 }   
     </script>
 </body>
