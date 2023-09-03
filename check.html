@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form</title> 
+    <style>
+    .container
+    {
+        margin: auto;
+        width: 100%;
+    }
+#my-form
+    {
+        padding: 2rem;
+        background-color: orange;
+        display: block;
+    }
+.error
+    {
+        background-color: white;
+        text-align: center;
+    }
+.delbtn
+    {
+        display: block;
+        width: 20%;
+        padding: 10px 15px;
+        border: 0;
+        background: #c03535;
+        color: #fff;
+        border-radius: 5px;
+        margin: 5px 155px; 
+    }
+.editbtn
+    {
+        display: block;
+        width: 20%;
+        padding: 10px 15px;
+        border: 0;
+        background: #4d59f5;
+        color: #fff;
+        border-radius: 5px;
+        margin: 5px 155px; 
+    }
+</style>
+</head>
+<body>
+    <section class="container">
+        <form id="my-form">
+            <h1 style="text-align: center">Book a call</h1>
+            <p style="text-align: center">Book a call slot, and our representative will call you within 1hr of the selected time.</p>
+            <div class="msg"></div>
+            <div>
+                <label for="name">Name</label><br>
+                <input type="text" id="name" placeholder="John Doe" style="width: 100%">
+            </div>  
+            <div><br>
+                <label for="email">Email</label><br>
+                <input type="text" id="email" placeholder="JohnDoe@email.com" style="width: 100%">
+            </div><br>
+            <div>
+                <label for="phone">Phone</label><br>
+                <input type="tel" id="phone" name="phone" placeholder="123-45-678" maxlength="10" style="width: 100%">
+            </div><br>
+            <input class="btn" type="submit" value="Click Me" style="width: 100%">
+        </form>
+        <ul id="user"></ul>
+    </section>  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.0/axios.min.js"></script>
+    <script>
+        const myForm = document.querySelector('#my-form');
+        const nameInput = document.querySelector('#name');
+        const emailInput = document.querySelector('#email');
+        const phoneInput = document.querySelector('#phone');
+        const msg = document.querySelector('.msg');
+        const userList = document.querySelector('#user');
+        const btn = document.querySelector('.btn');        
+        btn.style.background = 'white';
+        btn.addEventListener('click', onsubmit);
+
+        function onsubmit(e) {
+            e.preventDefault();
+            
+            if (nameInput.value === '' || emailInput.value === '' || phoneInput.value === '') {
+                msg.classList.add('error');
+                msg.innerHTML = 'Please enter all the fields';
+                setTimeout(() => msg.remove(), 3000);
+            } else {
+                const obj = {
+                    name: nameInput.value,
+                    email: emailInput.value,
+                    phone: phoneInput.value
+                };
+
+                axios.post("https://crudcrud.com/api/92f32766ded742449d883cd4e8e1b29c/AppointmentData", obj)
+                .then((response) => {
+                    console.log(response.data);
+                    showUserOnScreen(); 
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+                
+                nameInput.value = '';
+                emailInput.value = '';
+                phoneInput.value = '';
+            }
+        }
+
+        function showUserOnScreen() {
+            axios.get("https://crudcrud.com/api/92f32766ded742449d883cd4e8e1b29c/AppointmentData")
+                .then((response) => {
+                    console.log(response.data);
+
+                    
+                    userList.innerHTML = '';
+
+                    
+                    for (var i = 0; i < response.data.length; i++) {
+                        const userData = response.data[i];
+
+                        const li = document.createElement('li');
+                        li.appendChild(document.createTextNode(`Name: ${userData.name}, Email: ${userData.email}, Phone No: ${userData.phone}`));
+                        userList.appendChild(li);
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+
+        window.addEventListener("DOMContentLoaded", showUserOnScreen);
+
+        const deleBtn = document.createElement('button');
+                    deleBtn.className = 'delbtn';
+
+        const editBtn = document.createElement('button');
+                    editBtn.className = 'editbtn';
+                
+                
+        
+    </script>
+</body>
+</html>
